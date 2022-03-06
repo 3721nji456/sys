@@ -1,9 +1,9 @@
 <template>
-  <div class="login_container">
+  <div class="login_container" :style="note">
     <div class="login_box">
       <!--头像区域 -->
       <div class="avater-box">
-        <img src="../assets/logo.png" alt="">
+        <img src="../assets/home1.png" alt="">
       </div>
       <!-- 登陆表单区域-->
       <el-form ref="loginformref" :model="loginform" :rules="loginformroles" label-width="0px" class="login_form">
@@ -13,21 +13,22 @@
         </el-form-item>
         <!--密码-->
         <el-form-item prop="password">
-          <el-input v-model="loginform.password" prefix-icon="el-icon-more" type="password"></el-input>
+          <el-input v-model="loginform.password" prefix-icon="el-icon-more" type="password" show-password></el-input>
         </el-form-item>
         <!--按钮-->
         <el-form-item class="btns">
           <el-button type="primary" @click="login">登录</el-button>
           <el-button type="info" @click="resetloginform">重置</el-button>
+          <el-button type="primary" @click="get">get</el-button>
         </el-form-item>
       </el-form>
-
     </div>
   </div>
 </template>
 
 <script>
   export default {
+
     data() {
       return {
         //登陆数据绑定对象
@@ -35,6 +36,7 @@
           username: '',
           password: ''
         },
+        list:[],
         //表单验证规则
         loginformroles: {
           //验证用户名是否合法
@@ -48,30 +50,44 @@
             {min: 2, max: 60, message: "长度在2到60个字符", trigger: "blur"}
           ]
 
+        },
+        note:{
+          backgroundImage:' url('+require( '../assets/hometu.jpg')+ ')',
+          backgroundSize:'cover',
+          backgroundRepeat:'no-repeat',
+          backgroundPosition:'center',
         }
       }
     },
-    methods:{
-      resetloginform(){
-        console.log(this)
+
+    methods: {
+      resetloginform() {
         this.$refs.loginformref.resetFields();
       },
-      login(){
-        this.$refs.loginformref.validate(async valid =>{
-          if(!valid) return;
-          const {data:res} = await this.http.post("login",this.loginform);
-          if(res.meta.status!==200) return this.$message.error('登陆失败');
+      login() {
+        this.$refs.loginformref.validate(async valid => {
+          if (!valid) return;
+          const {data: res} = await this.http.post("re", this.loginform);
+          if (res.status !== 200) return this.$message.error('登陆失败');
           this.$message.success('登陆成功');
-          console.log(res);
           //登陆成功token保存到客户端的sessionStorage中
-          window.sessionStorage.setItem("token",res.data.token);
+          window.sessionStorage.setItem("token", res.token);
+          window.sessionStorage.setItem("name",res.name);
+          window.sessionStorage.setItem("role",res.role);
           //编程式导航跳转
           this.$router.push("/home");
         });
-      }
+      },
+      get() {
+        this.$refs.loginformref.validate(async valid => {
+          if (!valid) return;
+          const {data: res} = await this.http.post("allrecord");
+          this.list = res;
+        });
+      },
+
     }
   }
-
 
 </script>
 
@@ -79,6 +95,7 @@
   .login_container {
     background-color: #2b4b6b;
     height: 100%;
+
   }
 
   .login_box {
