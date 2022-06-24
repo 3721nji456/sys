@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div >
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/infor' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>账号管理</el-breadcrumb-item>
@@ -13,10 +13,10 @@
 <!--    <iframe id="frame" name="iframe" style="display:none;" ></iframe>-->
     <el-card class="elc1" style="width: 240px">
         <h1 class="p" style="text-align: center">上传头像</h1>
-    <form action="http://192.168.88.238:8080/imageUpload" method="post" enctype="multipart/form-data" target="iframe" id="immg">
+    <form action="http://localhost:8080/imageUpload" method="post" enctype="multipart/form-data" target="iframe" id="immg">
       <input class="file" type="file" name="fileName" id="filename" accept="image/png, image/jpeg, image/jpg"
              @change="onLoadImage();">
-      <div id="onLoadImage" style="height: 120px;width: 120px;border: solid black;margin-left: 40px">
+      <div id="onLoadImage" style="height: 120px;width: 120px;border: solid #000000;margin-left: 40px">
       </div>
       <el-button type="primary" class="bb1" id="submitBtn" @click="checkSubmit()" >上传</el-button>
     </form>
@@ -39,14 +39,23 @@
           <el-button @click="resetForm('ruleForm')">重置</el-button>
         </el-form-item>
       </el-form>
+
     </el-card>
+    <div id="parent">
+      <el-button round @click="toChild"  type="primary" style="margin-left: 200px;height: 60px">刷新头像</el-button>
+      <child ref="child" v-show="false"></child>
+    </div>
   </div>
+
+
 </template>
 
 <script>
   import {Axios as axios} from "axios";
-
+  import child from "../components/home"
   export default {
+    name: 'parent',
+    components:{child},
     data() {
       var checkAge = (rule, value, callback) => {
         if (!value) {
@@ -100,48 +109,60 @@
       }
     },
     methods: {
-// 第一步
-//从相册中上传
-      upimage() {
-        this.$refs.fileInput.click();
-      },
-//第二部 预览图片
-      getFile(event) {
-        const files = event.target.files
-        let filename = files[0].name          //只有一个文件
-        if (filename.lastIndexOf('.') <= 0) {
-          return alert("Please add a valid image!")        //判断图片是否有效
-        }
-        const fileReader = new FileReader()                //内置方法new           	     FileReader()   读取文件
-        fileReader.addEventListener('load', () => {
-          this.userImg = fileReader.result
-          document.getElementById("img").src = this.userImg
-        })
 
-        fileReader.readAsDataURL(files[0])
-        this.image = files[0]
-
-//到这里后, 选择图片就可以显示出来了
-        this.changeimage = false;    // 点击查看头像关闭选项
+      toChild(){
+        /** this.$refs.child返回child组件实例 **/
+        // this.$refs.child.childmethod()
+        this.$refs.child.cc()
       },
 
-//第四步: 上传文件了
-      onUpload() {
 
-        let fd = new FormData()              //内置方法new FormData()  新建一个表格
-        fd.append('file', this.image)          //把image添加进去
-                                    //(       第二次有效打印           )
-        this.http.post("/imageUpload", this.filename).then(res => {                 //第一个参:this.postUrl就是上面保存好的要上传的地址           //(      第三次有效打印    )
-          window.reload()
-          if (res.status === 200 && res.data) {
-            let data = res.data.data
-            let imageUrl = data.url                                        //上传成功 , 后台返回了一个图片地址
-            this.imageUrl = imageUrl
-          }
-        }).catch(error => {
-          console.log(error)
-        })
+      qwde(){
+        console.log("134")
       },
+
+// // 第一步
+// //从相册中上传
+//       upimage() {
+//         this.$refs.fileInput.click();
+//       },
+// //第二部 预览图片
+//       getFile(event) {
+//         const files = event.target.files
+//         let filename = files[0].name          //只有一个文件
+//         if (filename.lastIndexOf('.') <= 0) {
+//           return alert("Please add a valid image!")        //判断图片是否有效
+//         }
+//         const fileReader = new FileReader()                //内置方法new           	     FileReader()   读取文件
+//         fileReader.addEventListener('load', () => {
+//           this.userImg = fileReader.result
+//           document.getElementById("img").src = this.userImg
+//         })
+//
+//         fileReader.readAsDataURL(files[0])
+//         this.image = files[0]
+//
+// //到这里后, 选择图片就可以显示出来了
+//         this.changeimage = false;    // 点击查看头像关闭选项
+//       },
+//
+// //第四步: 上传文件了
+//       onUpload() {
+//
+//         let fd = new FormData()              //内置方法new FormData()  新建一个表格
+//         fd.append('file', this.image)          //把image添加进去
+//                                     //(       第二次有效打印           )
+//         this.http.post("/imageUpload", this.filename).then(res => {                 //第一个参:this.postUrl就是上面保存好的要上传的地址           //(      第三次有效打印    )
+//           window.reload()
+//           if (res.status === 200 && res.data) {
+//             let data = res.data.data
+//             let imageUrl = data.url                                        //上传成功 , 后台返回了一个图片地址
+//             this.imageUrl = imageUrl
+//           }
+//         }).catch(error => {
+//           console.log(error)
+//         })
+//       },
 
 
       //检查图片
@@ -166,14 +187,17 @@
 
       //预览图片
       onLoadImage() {
+
         if (this.checkImage()) {
           var file = $('#filename').get(0).files[0];
           var reader = new FileReader();
           //将文件以Data URL形式读入页面
           reader.readAsDataURL(file);
           reader.onload = function (e) {
+            console.log(this.result)
             //显示文件
             $("#onLoadImage").html('<img src="' + this.result + '" alt="" ' + 'style="height: 120px;width: 120px;"/>');
+
           }
         }
 

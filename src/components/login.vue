@@ -19,8 +19,8 @@
         <el-form-item class="btns">
           <el-button type="primary" @click="login">登录</el-button>
           <el-button type="info" @click="resetloginform">重置</el-button>
-          <el-button type="primary" @click="get">get</el-button>
         </el-form-item>
+<!--        <el-button type="primary" @click="fe">fe</el-button>-->
       </el-form>
     </div>
   </div>
@@ -56,7 +56,8 @@
           backgroundSize:'cover',
           backgroundRepeat:'no-repeat',
           backgroundPosition:'center',
-        }
+        },
+        f:''
       }
     },
 
@@ -68,14 +69,15 @@
         this.$refs.loginformref.validate(async valid => {
           if (!valid) return;
           const {data: res} = await this.http.post("re", this.loginform);
-          if (res.status !== 200) return this.$message.error('登陆失败');
+          if (res.status == 240) return this.$message.error('密码错误');
+          if (res.status == 241) return this.$message.error('用户不存在');
           this.$message.success('登陆成功');
           //登陆成功token保存到客户端的sessionStorage中
           window.sessionStorage.setItem("token", res.token);
-          window.sessionStorage.setItem("name",res.name);
-          window.sessionStorage.setItem("role",res.role);
+          window.sessionStorage.setItem("name", res.name);
+          window.sessionStorage.setItem("role", res.role);
           //编程式导航跳转
-          this.$router.push("/home");
+          await this.$router.push("/home");
         });
       },
       get() {
@@ -85,7 +87,18 @@
           this.list = res;
         });
       },
-
+      fe(){
+        this.axios({
+          url: 'todata',
+          method: 'post',
+          data: {
+            a:'sqdq'
+          }
+        }).then(res => {
+          this.getlist()
+          this.$message.success("修改成功")
+        })
+      },
     }
   }
 

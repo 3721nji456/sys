@@ -11,6 +11,22 @@ import img from "../components/img";
 import ascc from "../components/ascc";
 import kascc from "../components/kascc";
 import chuli from "../components/chuli";
+import shanchu from "../components/shanchu";
+import a from "../components/a.vue";
+import p from "../components/p.vue";
+import xiangqing from "../components/xiangqing";
+import jinjie from "../components/jinjie";
+import updateqx from "../components/updateqx";
+import pandian from "../components/pandian";
+import daipandian from "../components/daipandian";
+import panfinish from "../components/panfinish";
+import companyinfor from "../components/companyinfor";
+import companylist from "../components/companylist";
+import line from "../components/line";
+import bing from "../components/bing";
+import goodsinfor from "../components/goodsinfor";
+import goodslist from "../components/goodslist";
+import ruchu from "../components/ruchu";
 Vue.use(Router)
 
 const router = new Router({
@@ -32,7 +48,23 @@ const router = new Router({
           {path: '/img',component: img},
           {path: '/ascc',component: ascc},
           {path: '/kascc',component: kascc},
-          {path: '/chuli',component: chuli}
+          {path: '/chuli',component: chuli},
+          {path:'/shanchu',component: shanchu},
+          {path:'/a',component: a},
+          {path:'/p',component: p},
+          {path: '/xiangqing',component: xiangqing},
+          {path: '/jinjie',component: jinjie},
+          {path: '/updatepx',component: updateqx},
+          {path: '/pandian',component: pandian},
+          {path: '/daipandian',component: daipandian},
+          {path: '/panfinish',component: panfinish},
+          {path: '/companyinfor',component: companyinfor},
+          {path: '/companylist',component: companylist},
+          {path: '/line',component: line},
+          {path: '/bing',component: bing},
+          {path: '/goodsinfor',component: goodsinfor},
+          {path: '/goodslist',component: goodslist},
+          {path: '/ruchu',component: ruchu},
         ]
 
     }
@@ -42,6 +74,8 @@ const router = new Router({
 //挂载路由守卫
 router.beforeEach((to,from,next)=>{
     if(to.path==="/login") return  next()
+    const login = window.sessionStorage.getItem('login')
+    if(login=='false')window.sessionStorage.clear()
     //获取token
     const str = window.sessionStorage.getItem('token')
     if(!str) return next('/login')

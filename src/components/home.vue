@@ -1,11 +1,11 @@
 <template>
-  <div style="height: 100%">
+  <div id="child" style="height: 100%">
     <el-container class="home-container">
       <!--头部区域-->
       <el-header>
         <div>
           <img src="../assets/home1.png" alt="" class="img">
-          <span>仓库管理系统</span>
+          <span>库存管理系统</span>
         </div>
         <div class="inn">
           <img src="" id="im" style="width: 60px;height: 60px;border-radius: 30px">
@@ -49,7 +49,38 @@
                   <span>出库</span>
                 </template>
               </el-menu-item>
-
+              <el-menu-item :index="'/space'" >
+                <template slot="title">
+                  <!-- 图标-->
+                  <i class="el-icon-location"></i>
+                  <!-- 文本-->
+                  <span>出入库记录</span>
+                </template>
+              </el-menu-item>
+<!--              <el-menu-item :index="'/chuli'" v-show="can">-->
+<!--                <template slot="title">-->
+<!--                  &lt;!&ndash; 图标&ndash;&gt;-->
+<!--                  <i class="el-icon-location"></i>-->
+<!--                  &lt;!&ndash; 文本&ndash;&gt;-->
+<!--                  <span>处理零库存</span>-->
+<!--                </template>-->
+<!--              </el-menu-item>-->
+              <el-menu-item :index="'/xiangqing'" v-show="can">
+                <template slot="title">
+                  <!-- 图标-->
+                  <i class="el-icon-location"></i>
+                  <!-- 文本-->
+                  <span>物品详情</span>
+                </template>
+              </el-menu-item>
+              <el-menu-item :index="'/jinjie'" v-show="can">
+                <template slot="title">
+                  <!-- 图标-->
+                  <i class="el-icon-location"></i>
+                  <!-- 文本-->
+                  <span>警戒值设置</span>
+                </template>
+              </el-menu-item>
             </el-submenu>
             <el-submenu index="2">
               <!-- 一级菜单模板区-->
@@ -61,14 +92,7 @@
               </template>
 
               <!-- 二级菜单-->
-              <el-menu-item :index="'/space'" >
-                <template slot="title">
-                  <!-- 图标-->
-                  <i class="el-icon-location"></i>
-                  <!-- 文本-->
-                  <span>出入库记录</span>
-                </template>
-              </el-menu-item>
+
               <el-menu-item :index="'/tianjia'" v-show="can">
                 <template slot="title">
                   <!-- 图标-->
@@ -85,12 +109,22 @@
                   <span>账号管理</span>
                 </template>
               </el-menu-item>
-              <el-menu-item :index="'/chuli'" v-show="can">
+
+              <el-menu-item :index="'/shanchu'" v-show="can">
                 <template slot="title">
                   <!-- 图标-->
                   <i class="el-icon-location"></i>
                   <!-- 文本-->
-                  <span>处理零库存</span>
+                  <span>删除账号</span>
+                </template>
+              </el-menu-item>
+
+              <el-menu-item :index="'/updatepx'" v-show="can">
+                <template slot="title">
+                  <!-- 图标-->
+                  <i class="el-icon-location"></i>
+                  <!-- 文本-->
+                  <span>修改权限</span>
                 </template>
               </el-menu-item>
             </el-submenu>
@@ -121,6 +155,138 @@
                   <span>趋势图</span>
                 </template>
               </el-menu-item>
+
+              <!-- 二级菜单-->
+              <el-menu-item :index="'/line'" >
+                <template slot="title">
+                  <!-- 图标-->
+                  <i class="el-icon-location"></i>
+                  <!-- 文本-->
+                  <span>折线图</span>
+                </template>
+              </el-menu-item>
+
+              <!-- 二级菜单-->
+              <el-menu-item :index="'/bing'" >
+                <template slot="title">
+                  <!-- 图标-->
+                  <i class="el-icon-location"></i>
+                  <!-- 文本-->
+                  <span>占比图</span>
+                </template>
+              </el-menu-item>
+
+              <!-- 二级菜单-->
+              <el-menu-item :index="'/ruchu'" >
+                <template slot="title">
+                  <!-- 图标-->
+                  <i class="el-icon-location"></i>
+                  <!-- 文本-->
+                  <span>出入库图</span>
+                </template>
+              </el-menu-item>
+
+            </el-submenu>
+            <el-submenu index="4">
+              <!-- 一级菜单模板区-->
+              <template slot="title" >
+                <!-- 图标-->
+                <i class="el-icon-location"></i>
+                <!-- 文本-->
+                <span>盘点</span>
+              </template>
+
+              <!-- 二级菜单-->
+              <el-menu-item :index="'/pandian'" v-show="can">
+                <template slot="title">
+                  <!-- 图标-->
+                  <i class="el-icon-location"></i>
+                  <!-- 文本-->
+                  <span>盘点</span>
+                </template>
+              </el-menu-item>
+
+              <!-- 二级菜单-->
+              <el-menu-item :index="'/daipandian'" >
+                <template slot="title">
+                  <!-- 图标-->
+                  <i class="el-icon-location"></i>
+                  <!-- 文本-->
+                  <span>待盘点</span>
+                </template>
+              </el-menu-item>
+
+              <!-- 二级菜单-->
+              <el-menu-item :index="'/panfinish'" v-show="can">
+                <template slot="title">
+                  <!-- 图标-->
+                  <i class="el-icon-location"></i>
+                  <!-- 文本-->
+                  <span>盘点记录</span>
+                </template>
+              </el-menu-item>
+
+            </el-submenu>
+            <el-submenu index="5" >
+              <!-- 一级菜单模板区-->
+              <template slot="title">
+                <!-- 图标-->
+                <i class="el-icon-location"></i>
+                <!-- 文本-->
+                <span>供货商管理</span>
+              </template>
+
+              <!-- 二级菜单-->
+              <el-menu-item :index="'/companyinfor'" >
+                <template slot="title">
+                  <!-- 图标-->
+                  <i class="el-icon-location"></i>
+                  <!-- 文本-->
+                  <span>供货商添加</span>
+                </template>
+              </el-menu-item>
+
+              <!-- 二级菜单-->
+              <el-menu-item :index="'/companylist'" v-show="can">
+                <template slot="title">
+                  <!-- 图标-->
+                  <i class="el-icon-location"></i>
+                  <!-- 文本-->
+                  <span>供货商列表</span>
+                </template>
+              </el-menu-item>
+
+            </el-submenu>
+
+
+            <el-submenu index="6">
+              <!-- 一级菜单模板区-->
+              <template slot="title" >
+                <!-- 图标-->
+                <i class="el-icon-location"></i>
+                <!-- 文本-->
+                <span>物品管理</span>
+              </template>
+
+              <!-- 二级菜单-->
+              <el-menu-item :index="'/goodsinfor'" >
+                <template slot="title">
+                  <!-- 图标-->
+                  <i class="el-icon-location"></i>
+                  <!-- 文本-->
+                  <span>添加物品信息</span>
+                </template>
+              </el-menu-item>
+
+              <!-- 二级菜单-->
+              <el-menu-item :index="'/goodslist'" v-show="can">
+                <template slot="title">
+                  <!-- 图标-->
+                  <i class="el-icon-location"></i>
+                  <!-- 文本-->
+                  <span>物品信息管理</span>
+                </template>
+              </el-menu-item>
             </el-submenu>
           </el-menu>
         </el-aside>
@@ -135,9 +301,10 @@
 </template>
 
 <script>
-  import img from "./img";
+
 
   export default {
+    name: 'child',
     data() {
       return {
         infor: [],
@@ -145,13 +312,14 @@
         nn:{
           nname:'',
           nrole:'',
+          newname:''
         },
-        imgurl:'http://192.168.88.238:8080/image/',
+        imgurl:'http://localhost:8080/image/',
         imm:'',
         img:'',
         rrole:'',
         can:false,
-
+        nnc:'',
       }
 
     },
@@ -160,9 +328,16 @@
       this.getnn();
       this.cc();
       this.rolee()
+      this.ncn()
     },
 
     methods: {
+      childmethod(){
+        this.cc()
+      },
+      parentHandleclick() {
+        this.cc()
+      },
       logout() {
         window.sessionStorage.clear();
         this.$router.push("/login");
@@ -177,7 +352,23 @@
       async getnn(){
         const {data: res} = await this.http.post("/nn")
         this.nn = res
+        window.sessionStorage.getItem("name");
       },
+
+      ncn(){
+        this.axios({
+          url:'nn',
+          method:'post',
+          data:{
+          },
+          xhrField:{
+            withCredentials:true
+          }
+        }).then(res=>{
+          this.nnc=res
+        })
+      },
+
       async cc(){
         const {data: res} = await this.http.post("/selectimg")
         this.imm=res
@@ -205,6 +396,24 @@
           setTimeout(()=>console.log(i),1)
         }
       }
+    },
+    open() {
+      this.$confirm('是否退出登录?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        window.sessionStorage.clear();
+        this.$router.push("/login");
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消'
+        });
+      });
+    },
+    ab(){
+      console.log("ssssssssss")
     }
   }
 </script>

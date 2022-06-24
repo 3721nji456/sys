@@ -11,13 +11,13 @@
           <el-input v-model="ruleForm.use"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="pass" style="width: 400px">
-          <el-input type="password" v-model="ruleForm.pass" autocomplete="off" show-password ></el-input>
+          <el-input type="password" v-model="ruleForm.pass" autocomplete="off" show-password></el-input>
         </el-form-item>
         <el-form-item label="确认密码" prop="checkPass" style="width: 400px">
           <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off" show-password></el-input>
         </el-form-item>
         <el-form-item label="权限">
-          <el-select    v-model="ruleForm.role" placeholder="请选择类型" style="margin-bottom: 15px">
+          <el-select v-model="ruleForm.role" placeholder="请选择类型" style="margin-bottom: 15px">
             <el-option
               :key="no"
               :label="no"
@@ -68,25 +68,25 @@
       };
       return {
         ruleForm: {
-          use:'',
+          use: '',
           pass: '',
           checkPass: '',
-          role:''
+          role: ''
         },
-          no:'normal',
-          mo:'super',
+        no: 'normal',
+        mo: 'super',
         rules: {
           use: [
-            { validator: validatePass, trigger: 'blur' }
+            {validator: validatePass, trigger: 'blur'}
           ],
           pass: [
-            { validator: validatePass, trigger: 'blur' }
+            {validator: validatePass, trigger: 'blur'}
           ],
           checkPass: [
-            { validator: validatePass2, trigger: 'blur' }
+            {validator: validatePass2, trigger: 'blur'}
           ],
           age: [
-            { validator: checkAge, trigger: 'blur' }
+            {validator: checkAge, trigger: 'blur'}
           ]
         }
       }
@@ -95,11 +95,14 @@
 
 
       submitForm(formName) {
-        this.$refs[formName].validate(async(valid) => {
+        this.$refs[formName].validate(async (valid) => {
           if (valid) {
             const {data: res} = await this.http.post("save", this.ruleForm);
-            if (res.status == 200) return this.$message.success('添加成功'); this.resetForm(formName)
-            if (res.status == 300)this.$message.error('添加失败,用户已存在');
+            if (res.status == 200) {
+              this.resetForm(formName);
+              return this.$message.success('添加成功');
+            }
+            if (res.status == 300) this.$message.error('添加失败,用户已存在');
           } else {
             console.log('error submit!!');
             return false;
